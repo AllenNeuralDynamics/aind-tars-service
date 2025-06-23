@@ -2,7 +2,7 @@
 
 import unittest
 
-from aind_service_template_server.models import (
+from aind_tars_service_server.models import (
     Content,
     HealthCheck,
 )
