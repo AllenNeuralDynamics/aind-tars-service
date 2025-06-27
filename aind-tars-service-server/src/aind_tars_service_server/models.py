@@ -1,16 +1,19 @@
 """Module for defining models from TARS"""
 
 from datetime import datetime
-from typing import Any, List, Optional, Literal
+from typing import Any, List, Literal, Optional
 
 from pydantic import BaseModel, Field
+
 from aind_tars_service_server import __version__
+
 
 class HealthCheck(BaseModel):
     """Response model to validate and return when performing a health check."""
 
     status: Literal["OK"] = "OK"
     service_version: str = __version__
+
 
 class BaseResponse(BaseModel):
     """Most responses have this shape"""
@@ -51,7 +54,7 @@ class Virus(DataModel):
     aliases: List[Alias] = Field(default=[])
     capsid: Optional[Any] = Field(default=None)
     citations: list = Field(default=None)
-    molecules: list = Field(default=None) # List[Molecule]? 
+    molecules: list = Field(default=None)  # List[Molecule]?
     otherMolecules: list = Field(default=None)
     patents: list = Field(default=None)
 
@@ -170,6 +173,7 @@ class VirusResponse(BaseResponse):
     """VirusResponse"""
 
     data: List[Virus] = Field(default=[])
+
 
 class InjectionMaterialData(BaseModel):
     """Tars Injection Material Data"""

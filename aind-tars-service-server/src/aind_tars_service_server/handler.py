@@ -118,11 +118,14 @@ class SessionHandler:
         response = self._get_prep_lot_response(prep_lot_id=sanitized_id)
         prep_lot_data = []
         for d in response.data:
-            if isinstance(d.lot, str) and d.lot.strip().lower() == sanitized_id.lower():
+            if (
+                isinstance(d.lot, str)
+                and d.lot.strip().lower() == sanitized_id.lower()
+            ):
                 prep_lot_data.append(d)
         return prep_lot_data
 
-    def _get_raw_molecules_response(self, plasmid_name: str) -> Response:
+    def _get_raw_molecule_response(self, plasmid_name: str) -> Response:
         """
         Get raw requests Response
         Parameters
@@ -161,7 +164,7 @@ class SessionHandler:
 
         """
 
-        response = self._get_raw_molecules_response(plasmid_name=plasmid_name)
+        response = self._get_raw_molecule_response(plasmid_name=plasmid_name)
         response.raise_for_status()
         model_response = MoleculeResponse.model_validate_json(
             json.dumps(response.json())
@@ -256,29 +259,3 @@ class SessionHandler:
                 else:
                     continue
         return virus_data
-    
-    def get_injection_material_data(self, prep_lot_id: str):
-        """
-        Return injection material data for a prep_lot_id
-        Parameters
-        ----------
-        prep_lot_id : str
-
-        Returns
-        -------
-        List[PrepLotData]
-        """
-        prep_lot_data = self.get_prep_lot_data(prep_lot_id=prep_lot_id)
-        for lot in prep_lot_data:
-            virus_tars_id = next(
-                    (
-                        alias["name"]
-                        for alias in lot["viralPrep"]["virus"]["aliases"]
-                        if alias["isPreferred"]
-                    ),
-                    None,
-                )
-            # check virus registry with tars id
-            virus_data = self.get_virus_data(virus_name=virus_tars_id)
-
-            

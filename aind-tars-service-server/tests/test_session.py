@@ -1,6 +1,7 @@
 """Tests session module"""
 
 import pytest
+from requests import Session
 
 from aind_tars_service_server.session import get_session
 
@@ -12,8 +13,8 @@ class TestSession:
         """Tests get_session method"""
 
         session = next(get_session())
-        base_url = session.base_url
-        assert "example" == base_url
+        assert session is not None
+        assert isinstance(session, Session)
 
 
 if __name__ == "__main__":

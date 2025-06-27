@@ -1,9 +1,10 @@
 """Module for settings to connect to TARS backend"""
 
-from azure.identity import ClientSecretCredential
+from typing import Optional
+
 from pydantic import Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from typing import Optional
+
 
 class Settings(BaseSettings):
     """Settings needed to connect to LabTracks Database"""
@@ -22,16 +23,6 @@ class Settings(BaseSettings):
     scope: str = Field(..., description="Scope")
     resource: str = Field(..., description="Resource")
     redis_url: Optional[str] = Field(default=None)
-    
-    def get_bearer_token(self):
-        """Retrieves Access Token"""
-        credentials = ClientSecretCredential(
-            tenant_id=self.tenant_id,
-            client_id=self.client_id,
-            client_secret=self.client_secret.get_secret_value(),
-        )
-        token, exp = credentials.get_token(self.scope)
-        return token, exp
 
 
 def get_settings() -> Settings:
