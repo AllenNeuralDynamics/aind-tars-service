@@ -1,19 +1,10 @@
-"""Module to handle requests session"""
+"""Module to handle constructing TARS client."""
 
-from requests_toolbelt.sessions import BaseUrlSession
-
-from aind_tars_service_server.configs import Settings
-
-settings = Settings()
+import requests
 
 
 def get_session():
-    """
-    Yield a session object. This will automatically close the session when
-    finished.
-    """
-    session = BaseUrlSession(base_url=settings.host)
-    try:
-        yield session
-    finally:
-        session.close()
+    """Yield a session object. This will automatically close the session when
+    finished."""
+    session = requests.Session()
+    yield session

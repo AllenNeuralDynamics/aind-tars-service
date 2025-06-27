@@ -6,27 +6,48 @@ import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.routing import APIRoute
+from collections.abc import AsyncIterator
+from contextlib import asynccontextmanager
 
 from aind_tars_service_server import __version__ as service_version
 from aind_tars_service_server.route import router
+from aind_tars_service_server.configs import get_settings
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.inmemory import InMemoryBackend
+from fastapi_cache.backends.redis import RedisBackend
+
+# from redis import asyncio as aioredis  # noqa
+from redis.asyncio import from_url  # noqa
 
 # The log level can be set by adding an environment variable before launch.
 log_level = os.getenv("LOG_LEVEL", "INFO")
 logging.basicConfig(level=log_level)
 
 description = """
-## aind-service-template
+## aind-tars-service
 
-Service to pull data from example backend.
+Service to pull data from TARS.
 
 """
 
+@asynccontextmanager
+async def lifespan(_: FastAPI) -> AsyncIterator[None]:
+    """Init cache and add to lifespan of app"""
+    settings = get_settings()
+    if settings.redis_url is not None:
+        redis = from_url(settings.redis_url)
+        FastAPICache.init(RedisBackend(redis), prefix="fastapi-cache")
+    else:
+        FastAPICache.init(InMemoryBackend(), prefix="fastapi-cache")
+    yield
+
 # noinspection PyTypeChecker
 app = FastAPI(
-    title="aind-service-template",
+    title="aind-tars-service",
     description=description,
-    summary="Serves data from example backend.",
+    summary="Serves data from TARS.",
     version=service_version,
+    lifespan=lifespan,
 )
 
 # noinspection PyTypeChecker

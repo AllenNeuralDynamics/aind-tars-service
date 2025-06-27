@@ -17,10 +17,11 @@ readme = "README.md"
 dynamic = ["version"]
 
 dependencies = [
-    'requests-toolbelt',  # Used for example. Remove if not needed.
     'pydantic>=2.0',
     'pydantic-settings>=2.0',
     'fastapi[standard]>=0.114.0',
+    'azure-identity>=1.15.0',
+    'fastapi-cache2[redis]>=0.2.2'
 ]
 
 [project.optional-dependencies]
@@ -90,5 +91,9 @@ fail-under = 100
 asyncio_mode="auto"
 asyncio_default_fixture_loop_scope="function"
 env = [
-    "MYENV_HOST=example"
+    "TARS_TENANT_ID=tenant_id",
+    "TARS_CLIENT_ID=client_id",
+    "TARS_CLIENT_SECRET=client_secret",
+    "TARS_SCOPE=scope",
+    "TARS_RESOURCE=resource"
 ]
