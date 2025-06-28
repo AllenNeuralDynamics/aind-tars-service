@@ -4,7 +4,7 @@ from typing import List
 
 from azure.core.credentials import AccessToken
 from azure.identity import ClientSecretCredential
-from fastapi import APIRouter, Depends, HTTPException, Path, status
+from fastapi import APIRouter, Depends, Path, status
 from fastapi_cache.decorator import cache
 from requests import Session
 
@@ -79,11 +79,6 @@ async def get_viral_prep_lot(
         session=session, bearer_token=bearer_token, settings=settings
     )
     prep_lot_data = handler.get_prep_lot_data(prep_lot_id=prep_lot_id)
-    if len(prep_lot_data) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Prep lot with ID {prep_lot_id} not found",
-        )
     return prep_lot_data
 
 
@@ -105,11 +100,6 @@ async def get_molecule_data(
         session=session, bearer_token=bearer_token, settings=settings
     )
     molecule_data = handler.get_molecule_data(plasmid_name=plasmid_name)
-    if len(molecule_data) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Molecule data for {plasmid_name} not found",
-        )
     return molecule_data
 
 
@@ -131,9 +121,4 @@ async def get_virus_data(
         session=session, bearer_token=bearer_token, settings=settings
     )
     virus_data = handler.get_virus_data(virus_name=virus_name)
-    if len(virus_data) == 0:
-        raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
-            detail=f"Virus data for {virus_name} not found",
-        )
     return virus_data

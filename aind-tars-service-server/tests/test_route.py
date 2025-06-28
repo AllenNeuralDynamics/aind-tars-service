@@ -64,26 +64,6 @@ class TestRoutes:
         mock_get_prep_lot_data.assert_called_once_with(prep_lot_id="VT3214g")
 
     @patch("aind_tars_service_server.route.get_access_token")
-    @patch("aind_tars_service_server.handler.SessionHandler.get_prep_lot_data")
-    async def test_get_viral_prep_lot_404(
-        self,
-        mock_get_prep_lot_data: MagicMock,
-        mock_get_access_token: MagicMock,
-        client: TestClient,
-    ):
-        """Tests get_viral_prep_lot route when no prep lot found"""
-        mock_get_access_token.return_value = "abc123"
-        mock_get_prep_lot_data.return_value = []
-
-        response = client.get("/viral_prep_lot/bad_lot_id")
-
-        assert 404 == response.status_code
-        assert (
-            "Prep lot with ID bad_lot_id not found"
-            in response.json()["detail"]
-        )
-
-    @patch("aind_tars_service_server.route.get_access_token")
     @patch("aind_tars_service_server.handler.SessionHandler.get_molecule_data")
     async def test_get_molecule_data_200(
         self,
@@ -107,26 +87,6 @@ class TestRoutes:
         assert len(response.json()) >= 1
         mock_get_access_token.assert_called_once()
         mock_get_molecule_data.assert_called_once_with(plasmid_name="AiP1109")
-
-    @patch("aind_tars_service_server.route.get_access_token")
-    @patch("aind_tars_service_server.handler.SessionHandler.get_molecule_data")
-    async def test_get_molecule_data_404(
-        self,
-        mock_get_molecule_data: MagicMock,
-        mock_get_access_token: MagicMock,
-        client: TestClient,
-    ):
-        """Tests get_molecule_data route when no molecule found"""
-        mock_get_access_token.return_value = "abc123"
-        mock_get_molecule_data.return_value = []
-
-        response = client.get("/molecule/bad_plasmid_name")
-
-        assert 404 == response.status_code
-        assert (
-            "Molecule data for bad_plasmid_name not found"
-            in response.json()["detail"]
-        )
 
     @patch("aind_tars_service_server.route.get_access_token")
     @patch("aind_tars_service_server.handler.SessionHandler.get_virus_data")
@@ -153,26 +113,6 @@ class TestRoutes:
         mock_get_access_token.assert_called_once()
         mock_get_virus_data.assert_called_once_with(
             virus_name="VIR300002_PHPeB"
-        )
-
-    @patch("aind_tars_service_server.route.get_access_token")
-    @patch("aind_tars_service_server.handler.SessionHandler.get_virus_data")
-    async def test_get_virus_data_404(
-        self,
-        mock_get_virus_data: MagicMock,
-        mock_get_access_token: MagicMock,
-        client: TestClient,
-    ):
-        """Tests get_virus_data route when no virus found"""
-        mock_get_access_token.return_value = "abc123"
-        mock_get_virus_data.return_value = []
-
-        response = client.get("/virus/bad_virus_name")
-
-        assert 404 == response.status_code
-        assert (
-            "Virus data for bad_virus_name not found"
-            in response.json()["detail"]
         )
 
 

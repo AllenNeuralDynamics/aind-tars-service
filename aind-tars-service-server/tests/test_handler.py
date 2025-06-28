@@ -61,7 +61,9 @@ class TestSessionHandler:
         assert response_json["search"] == "VT3214g"
         assert response_json["searchFields"] == "lot"
 
-    def test_get_prep_lot_response(self, mock_get_raw_prep_lot_response):
+    def test_get_prep_lot_response(
+        self, mock_get_raw_prep_lot_response: MagicMock
+    ):
         """Tests _get_prep_lot_response method when 200 response returned"""
         handler = SessionHandler(
             session=MagicMock(fetch=mock_get_raw_prep_lot_response),
@@ -73,7 +75,9 @@ class TestSessionHandler:
         assert len(response.data) >= 0
         print(response.data)
 
-    def test_get_prep_lot_data(self, mock_get_raw_prep_lot_response):
+    def test_get_prep_lot_data(
+        self, mock_get_raw_prep_lot_response: MagicMock
+    ):
         """Tests get_prep_lot_data method"""
         handler = SessionHandler(
             session=MagicMock(fetch=mock_get_raw_prep_lot_response),
@@ -110,7 +114,9 @@ class TestSessionHandler:
         assert kwargs["params"]["search"] == "AiP1109"
         assert kwargs["params"]["searchFields"] == "name"
 
-    def test_get_molecule_response(self, mock_get_raw_molecule_response):
+    def test_get_molecule_response(
+        self, mock_get_raw_molecule_response: MagicMock
+    ):
         """Tests _get_molecule_response method"""
         handler = SessionHandler(
             session=MagicMock(fetch=mock_get_raw_molecule_response),
@@ -121,7 +127,9 @@ class TestSessionHandler:
         assert isinstance(response, MoleculeResponse)
         assert len(response.data) >= 0
 
-    def test_get_molecule_data(self, mock_get_raw_molecule_response):
+    def test_get_molecule_data(
+        self, mock_get_raw_molecule_response: MagicMock
+    ):
         """Tests get_molecule_data method"""
         handler = SessionHandler(
             session=MagicMock(fetch=mock_get_raw_molecule_response),
@@ -158,7 +166,7 @@ class TestSessionHandler:
         assert kwargs["params"]["search"] == "VIR300002_PHPeB"
         assert kwargs["params"]["searchFields"] == "aliases.name"
 
-    def test_get_virus_response(self, mock_get_raw_virus_response):
+    def test_get_virus_response(self, mock_get_raw_virus_response: MagicMock):
         """Tests _get_virus_response method"""
         handler = SessionHandler(
             session=MagicMock(fetch=mock_get_raw_virus_response),
@@ -169,7 +177,7 @@ class TestSessionHandler:
         assert isinstance(response, VirusResponse)
         assert len(response.data) >= 0
 
-    def test_get_virus_data(self, mock_get_raw_virus_response):
+    def test_get_virus_data(self, mock_get_raw_virus_response: MagicMock):
         """Tests get_virus_data method"""
         handler = SessionHandler(
             session=MagicMock(fetch=mock_get_raw_virus_response),
