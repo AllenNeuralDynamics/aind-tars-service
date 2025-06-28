@@ -55,6 +55,6 @@ class SessionHandler:
             page_num = response.json()["page"]
             all_data.extend(response.json()["data"])
             number_of_records = len(all_data)
-        if limit and len(all_data) > 0:
-            all_data = all_data[0:max_count]
+        if limit > 0:
+            all_data = all_data[0:limit]
         return all_data
