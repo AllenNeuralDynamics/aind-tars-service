@@ -15,20 +15,6 @@ class HealthCheck(BaseModel):
     service_version: str = __version__
 
 
-class BaseResponse(BaseModel):
-    """Most responses have this shape"""
-
-    data: list
-    totalCount: int
-    pageSize: int
-    page: int
-    orderBy: Optional[str] = Field(default=None)
-    order: Any
-    morePages: bool
-    search: Optional[str] = Field(default=None)
-    searchFields: Optional[str] = Field(default=None)
-
-
 class DataModel(BaseModel):
     """Most items have these fields"""
 
@@ -47,16 +33,16 @@ class Alias(DataModel):
     name: Optional[str] = Field(default=None)
 
 
-class Virus(DataModel):
+class VirusData(DataModel):
     """Virus"""
 
     rrId: Optional[Any] = Field(default=None)
     aliases: List[Alias] = Field(default=[])
     capsid: Optional[Any] = Field(default=None)
-    citations: list = Field(default=None)
-    molecules: list = Field(default=None)  # List[Molecule]?
-    otherMolecules: list = Field(default=None)
-    patents: list = Field(default=None)
+    citations: list = Field(default=[])
+    molecules: list = Field(default=[])  # List[Molecule]?
+    otherMolecules: list = Field(default=[])
+    patents: list = Field(default=[])
 
 
 class ViralPrepType(DataModel):
@@ -70,9 +56,9 @@ class ViralPrep(DataModel):
 
     rrId: Optional[Any] = Field(default=None)
     viralPrepType: Optional[ViralPrepType] = Field(default=None)
-    virus: Optional[Virus] = Field(default=None)
-    citations: list = Field(default=None)
-    shipments: list = Field(default=None)
+    virus: Optional[VirusData] = Field(default=None)
+    citations: list = Field(default=[])
+    shipments: list = Field(default=[])
     patents: list = Field(default=[])
     materialTransferAgreements: list = Field(default=[])
     qcCertificationFiles: list = Field(default=[])
@@ -96,12 +82,6 @@ class PrepLotData(DataModel):
     datePrepped: Optional[datetime] = Field(default=None)
     viralPrep: Optional[ViralPrep] = Field(default=None)
     titers: List[Titers] = Field(default=[])
-
-
-class PrepLotResponse(BaseResponse):
-    """PrepLotResponse"""
-
-    data: List[PrepLotData] = Field(default=[])
 
 
 class MoleculeType(DataModel):
@@ -135,48 +115,29 @@ class MoleculeData(DataModel):
     moleculeType: Optional[MoleculeType] = Field(default=None)
     state: Optional[Any] = Field(default=None)
     aliases: List[Alias] = Field(default=[])
-    citations: list = Field(default=None)
+    citations: list = Field(default=[])
     rrId: Optional[Any] = Field(default=None)
     fullName: Optional[str] = Field(default=None)
     addgeneId: Optional[Any] = Field(default=None)
     mgiId: Optional[Any] = Field(default=None)
     notes: Optional[Any] = Field(default=None)
     sequence: Optional[str] = Field(default=None)
-    genes: list = Field(default=None)
-    loci: list = Field(default=None)
+    genes: list = Field(default=[])
+    loci: list = Field(default=[])
     species: List[Species] = Field(default=[])
-    organizations: list = Field(default=None)
-    shipments: list = Field(default=None)
-    materialTransferAgreements: list = Field(default=None)
+    organizations: list = Field(default=[])
+    shipments: list = Field(default=[])
+    materialTransferAgreements: list = Field(default=[])
     genBankFiles: List[str] = Field(default=[])
     mapFiles: List[str] = Field(default=[])
     fastaFiles: List[str] = Field(default=[])
-    parents: list = Field(default=None)
-    children: list = Field(default=None)
-    patents: list = Field(default=None)
-    creators: list = Field(default=None)
+    parents: list = Field(default=[])
+    children: list = Field(default=[])
+    patents: list = Field(default=[])
+    creators: list = Field(default=[])
     principalInvestigator: Optional[Any] = Field(default=None)
     targetedCellPopulations: List[TargetedCellPopulation] = Field(default=[])
-    validatedCellPopulations: list = Field(default=None)
+    validatedCellPopulations: list = Field(default=[])
     targetedRois: List[TargetedRoi] = Field(default=[])
-    validatedRois: list = Field(default=None)
+    validatedRois: list = Field(default=[])
     genomeCoordinates: Optional[Any] = Field(default=None)
-
-
-class MoleculeResponse(BaseResponse):
-    """MoleculeResponse"""
-
-    data: List[MoleculeData] = Field(default=[])
-
-
-class VirusResponse(BaseResponse):
-    """VirusResponse"""
-
-    data: List[Virus] = Field(default=[])
-
-
-class InjectionMaterialData(BaseModel):
-    """Tars Injection Material Data"""
-
-    prep_lot_data: List[PrepLotData] = Field(default=[])
-    virus_data: List[Virus] = Field(default=[])

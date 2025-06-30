@@ -1,0 +1,92 @@
+{
+   "data": [
+      {
+         "lot": "VT3213G",
+         "datePrepped": "2022-02-04T00:00:00Z",
+         "viralPrep": {
+            "rrId": null,
+            "viralPrepType": {
+               "name": "Purified-SOP#VC003",
+               "createdAt": "2021-08-20T23:41:37.183718Z",
+               "createdBy": "person.s@example.com",
+               "updatedAt": null,
+               "updatedBy": null,
+               "id": "f94"
+            },
+            "virus": {
+               "rrId": null,
+               "aliases": [
+                  {
+                     "name": "VIR300000_PHPeB",
+                     "isPreferred": true,
+                     "citation": null,
+                     "createdAt": "2024-05-14T03:00:24.005744Z",
+                     "createdBy": "person.o@example.com",
+                     "updatedAt": "2024-12-18T20:16:09.403542Z",
+                     "updatedBy": "person.w@example.com",
+                     "id": "3a4"
+                  },
+                  {
+                     "name": "pAAV-7x-TRE-3x-eGFP",
+                     "isPreferred": false,
+                     "citation": null,
+                     "createdAt": "2024-12-18T02:16:06.195494Z",
+                     "createdBy": "person.w@example.com",
+                     "updatedAt": "2024-12-18T20:16:09.403542Z",
+                     "updatedBy": "person.w@example.com",
+                     "id": "47d"
+                  }
+               ],
+               "capsid": null,
+               "citations": [],
+               "molecules": [],
+               "otherMolecules": [],
+               "patents": [],
+               "createdAt": "2024-05-14T03:00:24.005731Z",
+               "createdBy": "person.o@example.com",
+               "updatedAt": "2024-12-18T20:16:09.403542Z",
+               "updatedBy": "person.w@example.com",
+               "id": "661"
+            },
+            "citations": [],
+            "shipments": [],
+            "patents": [],
+            "materialTransferAgreements": [],
+            "qcCertificationFiles": [],
+            "serotypes": [],
+            "createdAt": "2024-05-14T03:00:23.666341Z",
+            "createdBy": "person.o@example.com",
+            "updatedAt": "2024-12-18T20:16:09.482999Z",
+            "updatedBy": "person.w@example.com",
+            "id": "2b4"
+         },
+         "titers": [
+            {
+               "notes": "",
+               "isPreferred": true,
+               "thawedCount": 1,
+               "result": 43800000000000,
+               "titerType": null,
+               "createdAt": "2023-10-19T22:23:48.925791Z",
+               "createdBy": "person.w@example.com",
+               "updatedAt": "2024-12-18T20:06:30.618329Z",
+               "updatedBy": "person.w@example.com",
+               "id": "19d"
+            }
+         ],
+         "createdAt": "2023-10-19T22:22:32.417498Z",
+         "createdBy": "person.w@example.com",
+         "updatedAt": "2024-12-18T20:06:30.618329Z",
+         "updatedBy": "person.w@example.com",
+         "id": "291"
+      }
+   ],
+   "totalCount": 3,
+   "pageSize": 2,
+   "page": 1,
+   "orderBy": "id",
+   "order": "1",
+   "morePages": false,
+   "search": "VT321",
+   "searchFields": "lot"
+}

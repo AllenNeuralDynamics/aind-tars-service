@@ -3,12 +3,11 @@
 import json
 import os
 from pathlib import Path
-from typing import Any, Generator
-from unittest.mock import patch
+from typing import Any, Dict, Generator, List
+from unittest.mock import AsyncMock, MagicMock, patch
 
 import pytest
 from fastapi.testclient import TestClient
-from requests import Response
 
 from aind_tars_service_server.configs import Settings
 
@@ -19,49 +18,50 @@ patch(
 ).start()
 
 
-@pytest.fixture()
-def mock_get_raw_prep_lot_response(mocker):
-    """Mock raw prep_lot response"""
-    with open(RESOURCES_DIR / "raw_prep_lot_response.json") as f:
-        contents = json.load(f)
-    mock_get = mocker.patch(
-        "aind_tars_service_server.handler.SessionHandler"
-        "._get_raw_prep_lot_response"
-    )
-    mock_response = Response()
-    mock_response.status_code = 200
-    mock_response._content = json.dumps(contents).encode("utf-8")
-    mock_get.return_value = mock_response
+@pytest.fixture(scope="function")
+def mock_get_prep_lot_multiple_pages() -> AsyncMock:
+    """Mock responses fetching pages from prep lot"""
+    with open(RESOURCES_DIR / "prep_lot_response1.json", "r") as f:
+        first_response = json.load(f)
+    with open(RESOURCES_DIR / "prep_lot_response2.json", "r") as f:
+        second_response = json.load(f)
+    mock_async_client = AsyncMock()
+    mock_first_response = MagicMock(status_code=200)
+    mock_first_response.raise_for_status.return_value = None
+    mock_first_response.json.return_value = first_response
+    mock_second_response = MagicMock(status_code=200)
+    mock_second_response.raise_for_status.return_value = None
+    mock_second_response.json.return_value = second_response
+    mock_async_client.get.side_effect = [
+        mock_first_response,
+        mock_second_response,
+    ]
+    return mock_async_client
 
 
-@pytest.fixture()
-def mock_get_raw_molecule_response(mocker):
-    """Mock raw molecule response"""
-    with open(RESOURCES_DIR / "raw_molecule_response.json") as f:
-        contents = json.load(f)
-    mock_get = mocker.patch(
-        "aind_tars_service_server.handler.SessionHandler"
-        "._get_raw_molecule_response"
-    )
-    mock_response = Response()
-    mock_response.status_code = 200
-    mock_response._content = json.dumps(contents).encode("utf-8")
-    mock_get.return_value = mock_response
+@pytest.fixture(scope="session")
+def mock_prep_lot_data() -> List[Dict[str, Any]]:
+    """Mock fetching prep lot data"""
+
+    with open(RESOURCES_DIR / "prep_lot_response.json", "r") as f:
+        response = json.load(f)
+    return response["data"]
 
 
-@pytest.fixture()
-def mock_get_raw_virus_response(mocker):
-    """Mock raw virus response"""
-    with open(RESOURCES_DIR / "raw_virus_response.json") as f:
-        contents = json.load(f)
-    mock_get = mocker.patch(
-        "aind_tars_service_server.handler.SessionHandler"
-        "._get_raw_virus_response"
-    )
-    mock_response = Response()
-    mock_response.status_code = 200
-    mock_response._content = json.dumps(contents).encode("utf-8")
-    mock_get.return_value = mock_response
+@pytest.fixture(scope="session")
+def mock_virus_data() -> AsyncMock:
+    """Mock fetching virus data"""
+    with open(RESOURCES_DIR / "virus_response.json", "r") as f:
+        response = json.load(f)
+    return response["data"]
+
+
+@pytest.fixture(scope="session")
+def mock_molecule_data() -> AsyncMock:
+    """Mock fetching molecule data"""
+    with open(RESOURCES_DIR / "molecule_response.json", "r") as f:
+        response = json.load(f)
+    return response["data"]
 
 
 @pytest.fixture(scope="session")

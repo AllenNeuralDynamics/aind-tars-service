@@ -4,9 +4,9 @@ from typing import List
 
 from azure.core.credentials import AccessToken
 from azure.identity import ClientSecretCredential
-from fastapi import APIRouter, Depends, Path, status
+from fastapi import APIRouter, Depends, Path, Query, status
 from fastapi_cache.decorator import cache
-from requests import Session
+from httpx import AsyncClient
 
 from aind_tars_service_server.configs import Settings, get_settings
 from aind_tars_service_server.handler import SessionHandler
@@ -14,9 +14,8 @@ from aind_tars_service_server.models import (
     HealthCheck,
     MoleculeData,
     PrepLotData,
-    Virus,
+    VirusData,
 )
-from aind_tars_service_server.session import get_session
 
 router = APIRouter()
 
@@ -62,12 +61,24 @@ async def get_access_token(settings: Settings) -> str:
 
 
 @router.get(
-    "/viral_prep_lot/{prep_lot_id}",
+    "/viral_prep_lots/{lot}",
     response_model=List[PrepLotData],
 )
-async def get_viral_prep_lot(
-    prep_lot_id: str = Path(..., examples=["VT3214g"]),
-    session: Session = Depends(get_session),
+async def get_viral_prep_lots(
+    lot: str = Path(..., examples=["VT3214g"]),
+    page_size: int = Query(
+        1,
+        le=50,
+        alias="page_size",
+        description="Number of items to return in a single page.",
+        examples=[1],
+    ),
+    limit: int = Query(
+        1,
+        alias="limit",
+        description="Limit number of items returned. Set to 0 to return all.",
+        examples=[1],
+    ),
     settings: Settings = Depends(get_settings),
 ):
     """
@@ -75,50 +86,117 @@ async def get_viral_prep_lot(
     Retrieves viral prep lot information from TARS for a prep_lot_id.
     """
     bearer_token = await get_access_token(settings=settings)
-    handler = SessionHandler(
-        session=session, bearer_token=bearer_token, settings=settings
-    )
-    prep_lot_data = handler.get_prep_lot_data(prep_lot_id=prep_lot_id)
+    headers = {
+        "Authorization": f"Bearer {bearer_token}",
+        "Content-Type": "application/json",
+    }
+    query_params = {
+        "pageSize": str(page_size),
+        "order": "1",
+        "orderBy": "id",
+        "searchFields": "lot",
+        "search": lot.strip(),
+    }
+    async with AsyncClient(headers=headers) as client:
+        handler = SessionHandler(client=client)
+        raw_prep_lot_data = await handler.get_data(
+            url=settings.viral_prep_lots_url.unicode_string(),
+            params=query_params,
+            limit=limit,
+        )
+    prep_lot_data = [PrepLotData.model_validate(r) for r in raw_prep_lot_data]
     return prep_lot_data
 
 
 @router.get(
-    "/molecule/{plasmid_name}",
+    "/molecules/{name}",
     response_model=List[MoleculeData],
 )
-async def get_molecule_data(
-    plasmid_name: str = Path(..., examples=["AiP20611"]),
-    session: Session = Depends(get_session),
+async def get_molecules(
+    name: str = Path(..., examples=["AiP20611"]),
+    page_size: int = Query(
+        1,
+        le=50,
+        alias="page_size",
+        description="Number of items to return in a single page.",
+        examples=[1],
+    ),
+    limit: int = Query(
+        1,
+        alias="limit",
+        description="Limit number of items returned. Set to 0 to return all.",
+        examples=[1],
+    ),
     settings: Settings = Depends(get_settings),
 ):
     """
-    ## TARS Endpoint to retrieve molecule data.
-    Retrieves molecule data information from TARS for a prep_lot_id.
+    ## TARS Endpoint to molecule data.
     """
     bearer_token = await get_access_token(settings=settings)
-    handler = SessionHandler(
-        session=session, bearer_token=bearer_token, settings=settings
-    )
-    molecule_data = handler.get_molecule_data(plasmid_name=plasmid_name)
+    headers = {
+        "Authorization": f"Bearer {bearer_token}",
+        "Content-Type": "application/json",
+    }
+    query_params = {
+        "pageSize": str(page_size),
+        "order": "1",
+        "orderBy": "id",
+        "searchFields": "name",
+        "search": name.strip(),
+    }
+    async with AsyncClient(headers=headers) as client:
+        handler = SessionHandler(client=client)
+        raw_molecule_data = await handler.get_data(
+            url=settings.molecules_url.unicode_string(),
+            params=query_params,
+            limit=limit,
+        )
+    molecule_data = [MoleculeData.model_validate(r) for r in raw_molecule_data]
     return molecule_data
 
 
 @router.get(
-    "/virus/{virus_name}",
-    response_model=List[Virus],
+    "/viruses/{name}",
+    response_model=List[VirusData],
 )
-async def get_virus_data(
-    virus_name: str = Path(..., examples=["VIR300002_PHPeB"]),
-    session: Session = Depends(get_session),
+async def get_viruses(
+    name: str = Path(..., examples=["VIR300002_PHPeB"]),
+    page_size: int = Query(
+        1,
+        le=50,
+        alias="page_size",
+        description="Number of items to return in a single page.",
+        examples=[1],
+    ),
+    limit: int = Query(
+        1,
+        alias="limit",
+        description="Limit number of items returned. Set to 0 to return all.",
+        examples=[1],
+    ),
     settings: Settings = Depends(get_settings),
 ):
     """
-    ## TARS Endpoint to retrieve virus data.
-    Retrieves virus data information from TARS for a virus_name.
+    ## TARS Endpoint to molecule data.
     """
     bearer_token = await get_access_token(settings=settings)
-    handler = SessionHandler(
-        session=session, bearer_token=bearer_token, settings=settings
-    )
-    virus_data = handler.get_virus_data(virus_name=virus_name)
+    headers = {
+        "Authorization": f"Bearer {bearer_token}",
+        "Content-Type": "application/json",
+    }
+    query_params = {
+        "page_size": str(page_size),
+        "order": "1",
+        "orderBy": "id",
+        "searchFields": "aliases.name",
+        "search": name.strip(),
+    }
+    async with AsyncClient(headers=headers) as client:
+        handler = SessionHandler(client=client)
+        raw_virus_data = await handler.get_data(
+            url=settings.viruses_url.unicode_string(),
+            params=query_params,
+            limit=limit,
+        )
+    virus_data = [VirusData.model_validate(r) for r in raw_virus_data]
     return virus_data

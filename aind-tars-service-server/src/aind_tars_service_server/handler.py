@@ -1,261 +1,60 @@
 """Module to retrieve data from TARS using session object"""
 
-# Tools and Reagent Service
-import json
-from typing import List
+from copy import deepcopy
+from typing import Any, Dict, List, Optional
 
-from requests import Response, Session
-
-from aind_tars_service_server.configs import Settings
-from aind_tars_service_server.models import (
-    MoleculeData,
-    MoleculeResponse,
-    PrepLotData,
-    PrepLotResponse,
-    Virus,
-    VirusResponse,
-)
+from httpx import AsyncClient
 
 
 class SessionHandler:
-    """Handle session object to get data"""
+    """Handle pulling data from Sharepoint lists"""
 
-    def __init__(
-        self, session: Session, bearer_token: str, settings: Settings
-    ):
-        """Class constructor"""
-        self.settings = settings
-        self.session = session
-        self.session.headers.update(
-            {"Authorization": f"Bearer {bearer_token}"}
-        )
-
-    @staticmethod
-    def _sanitize_input(input_id: str) -> str:
+    def __init__(self, client: AsyncClient):
         """
-        Removes leading and trailing spaces from user input.
-        >>> SessionHandler._sanitize_input('\tVT3214g ')
-        'VT3214g'
+        Class constructor.
         Parameters
         ----------
-        input_id : str
+        client : AsyncClient
+        """
+        self.client = client
+
+    async def get_data(
+        self, url: str, params: Optional[Dict[str, str]], limit: int = 0
+    ) -> List[Dict[str, Any]]:
+        """
+        Returns data from TARS.
+
+        Parameters
+        ----------
+        url : str
+        params : Dict[str, str] | None
+        limit : int
+          Limit number of items returned. Set to 0 to return all.
 
         Returns
         -------
-        str
-        """
-        return input_id.strip()
-
-    def _get_raw_prep_lot_response(
-        self, prep_lot_id: str, page_size: int
-    ) -> Response:
-        """
-        Get raw requests Response
-        Parameters
-        ----------
-        prep_lot_id : str
-        page_size : int
-          The search runs a contains query. Since we are mostly interested in
-          exact matches, we set the default page size to 1.
-
-        Returns
-        -------
-        Response
-        """
-
-        prep_lot_url = f"{self.settings.resource}/api/v1/ViralPrepLots"
-        query_params = {
-            "pageSize": str(page_size),
-            "order": "1",
-            "orderBy": "id",
-            "searchFields": "lot",
-            "search": prep_lot_id,
-        }
-
-        return self.session.get(url=prep_lot_url, params=query_params)
-
-    def _get_prep_lot_response(
-        self, prep_lot_id: str, page_size: int = 1
-    ) -> PrepLotResponse:
-        """
-        Requests data where the 'lots' field contains prep_lot_id
-        Parameters
-        ----------
-        prep_lot_id : str
-          Example, VT3214g
-        page_size : int
-          The search runs a contains query. Since we are mostly interested in
-          exact matches, we set the default page size to 1.
-
-        Returns
-        -------
-        PrepLotResponse
+        List[Dict[str, Any]]
 
         """
 
-        response = self._get_raw_prep_lot_response(
-            prep_lot_id=prep_lot_id, page_size=page_size
-        )
+        params_copy = {"page": "0"} if params is None else deepcopy(params)
+        response = await self.client.get(url=url, params=params_copy)
         response.raise_for_status()
-        model_response = PrepLotResponse.model_validate_json(
-            json.dumps(response.json())
-        )
-
-        return model_response
-
-    def get_prep_lot_data(self, prep_lot_id: str) -> List[PrepLotData]:
-        """
-        Return prep_lot_data for a prep_lot_id
-        Parameters
-        ----------
-        prep_lot_id : str
-
-        Returns
-        -------
-        List[PrepLotData]
-        """
-        sanitized_id = self._sanitize_input(prep_lot_id)
-        response = self._get_prep_lot_response(prep_lot_id=sanitized_id)
-        prep_lot_data = []
-        for d in response.data:
-            if (
-                isinstance(d.lot, str)
-                and d.lot.strip().lower() == sanitized_id.lower()
-            ):
-                prep_lot_data.append(d)
-        return prep_lot_data
-
-    def _get_raw_molecule_response(self, plasmid_name: str) -> Response:
-        """
-        Get raw requests Response
-        Parameters
-        ----------
-        plasmid_name : str
-                page_size : int
-          The search runs a contains query. Since we are mostly interested in
-          exact matches, we set the default page size to 1.
-
-        Returns
-        -------
-        Response
-        """
-
-        molecule_url = f"{self.settings.resource}/api/v1/Molecules"
-        query_params = {
-            "order": "1",
-            "orderBy": "id",
-            "searchFields": "name",
-            "search": plasmid_name,
-        }
-
-        return self.session.get(url=molecule_url, params=query_params)
-
-    def _get_molecule_response(self, plasmid_name: str) -> MoleculeResponse:
-        """
-        Requests data where the 'name' field contains plasmid_name
-        Parameters
-        ----------
-        plasmid_name : str
-          Example, AiP1109
-
-        Returns
-        -------
-        MoleculeResponse
-
-        """
-
-        response = self._get_raw_molecule_response(plasmid_name=plasmid_name)
-        response.raise_for_status()
-        model_response = MoleculeResponse.model_validate_json(
-            json.dumps(response.json())
-        )
-        return model_response
-
-    def get_molecule_data(self, plasmid_name: str) -> List[MoleculeData]:
-        """
-        Return prep_lot_data for a prep_lot_id
-        Parameters
-        ----------
-        plasmid_name : str
-
-        Returns
-        -------
-        List[MoleculeData]
-        """
-        sanitized_id = self._sanitize_input(plasmid_name)
-        response = self._get_molecule_response(plasmid_name=sanitized_id)
-        molecule_data = []
-        for d in response.data:
-            for a in d.aliases:
-                if isinstance(a.name, str) and a.name == sanitized_id:
-                    molecule_data.append(d)
-                    break
-                else:
-                    continue
-        return molecule_data
-
-    def _get_raw_virus_response(self, virus_name: str) -> Response:
-        """
-        Get raw requests Response
-        Parameters
-        ----------
-        virus_name : str
-
-        Returns
-        -------
-        Response
-        """
-
-        virus_url = f"{self.settings.resource}/api/v1/Viruses"
-        query_params = {
-            "order": "1",
-            "orderBy": "id",
-            "searchFields": "aliases.name",
-            "search": virus_name,
-        }
-
-        return self.session.get(url=virus_url, params=query_params)
-
-    def _get_virus_response(self, virus_name: str) -> VirusResponse:
-        """
-        Requests data where the 'aliases.name' field contains virus_name
-        Parameters
-        ----------
-        virus_name : str
-          Example, AAV1
-
-        Returns
-        -------
-        VirusResponse
-
-        """
-
-        response = self._get_raw_virus_response(virus_name=virus_name)
-        response.raise_for_status()
-        model_response = VirusResponse.model_validate_json(
-            json.dumps(response.json())
-        )
-        return model_response
-
-    def get_virus_data(self, virus_name: str) -> List[Virus]:
-        """
-        Return virus_data for a virus_name
-        Parameters
-        ----------
-        virus_name : str
-
-        Returns
-        -------
-        List[Virus]
-        """
-        sanitized_id = self._sanitize_input(virus_name)
-        response = self._get_virus_response(virus_name=sanitized_id)
-        virus_data = []
-        for d in response.data:
-            for a in d.aliases:
-                if isinstance(a.name, str) and a.name == sanitized_id:
-                    virus_data.append(d)
-                    break
-                else:
-                    continue
-        return virus_data
+        all_data = []
+        more_pages = response.json()["morePages"]
+        total_count = response.json()["totalCount"]
+        page_num = response.json()["page"]
+        all_data.extend(response.json()["data"])
+        number_of_records = len(all_data)
+        max_count = total_count if limit == 0 else min(total_count, limit)
+        while more_pages and number_of_records < max_count:
+            params_copy["page"] = page_num + 1
+            response = await self.client.get(url=url, params=params_copy)
+            response.raise_for_status()
+            more_pages = response.json()["morePages"]
+            page_num = response.json()["page"]
+            all_data.extend(response.json()["data"])
+            number_of_records = len(all_data)
+        if limit > 0:
+            all_data = all_data[0:limit]
+        return all_data
