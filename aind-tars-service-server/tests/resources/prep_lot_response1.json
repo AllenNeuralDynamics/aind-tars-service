@@ -1,0 +1,192 @@
+{
+   "data": [
+      {
+         "lot": "VT3217g",
+         "datePrepped": "2022-02-04T00:00:00Z",
+         "viralPrep": {
+            "rrId": null,
+            "viralPrepType": {
+               "name": "Purified-SOP#VC003",
+               "createdAt": "2021-08-20T23:41:37.183718Z",
+               "createdBy": "person.a@example.com",
+               "updatedAt": null,
+               "updatedBy": null,
+               "id": "f94"
+            },
+            "virus": {
+               "rrId": null,
+               "aliases": [
+                  {
+                     "name": "AiV12689_PHPeB_2",
+                     "isPreferred": true,
+                     "citation": null,
+                     "createdAt": "2023-04-28T18:23:58.609986Z",
+                     "createdBy": "person.o@example.com",
+                     "updatedAt": null,
+                     "updatedBy": null,
+                     "id": "c48"
+                  },
+                  {
+                     "name": "AiP12689",
+                     "isPreferred": false,
+                     "citation": null,
+                     "createdAt": "2023-04-28T18:23:58.613548Z",
+                     "createdBy": "person.o@example.com",
+                     "updatedAt": null,
+                     "updatedBy": null,
+                     "id": "70c"
+                  },
+                  {
+                     "name": "rAAV-eHGT_682h-minBGpromoter-SYFP2-WPRE3-bGHpA",
+                     "isPreferred": false,
+                     "citation": null,
+                     "createdAt": "2023-04-28T18:23:58.61355Z",
+                     "createdBy": "person.o@example.com",
+                     "updatedAt": null,
+                     "updatedBy": null,
+                     "id": "04e"
+                  }
+               ],
+               "capsid": null,
+               "citations": [],
+               "molecules": [],
+               "otherMolecules": [],
+               "patents": [],
+               "createdAt": "2023-04-28T18:23:58.609984Z",
+               "createdBy": "person.o@example.com",
+               "updatedAt": null,
+               "updatedBy": null,
+               "id": "88f"
+            },
+            "citations": [],
+            "shipments": [],
+            "patents": [],
+            "materialTransferAgreements": [],
+            "qcCertificationFiles": [],
+            "serotypes": [],
+            "createdAt": "2023-04-28T18:23:56.374925Z",
+            "createdBy": "person.o@example.com",
+            "updatedAt": null,
+            "updatedBy": null,
+            "id": "013"
+         },
+         "titers": [
+            {
+               "notes": "",
+               "isPreferred": true,
+               "thawedCount": 1,
+               "result": 67300000000000,
+               "titerType": null,
+               "createdAt": "2023-06-03T02:11:08.521427Z",
+               "createdBy": "person.o@example.com",
+               "updatedAt": null,
+               "updatedBy": null,
+               "id": "685"
+            }
+         ],
+         "createdAt": "2023-04-28T18:23:56.374925Z",
+         "createdBy": "person.o@example.com",
+         "updatedAt": null,
+         "updatedBy": null,
+         "id": "599"
+      },
+      {
+         "lot": "VT3216G",
+         "datePrepped": "2022-02-04T00:00:00Z",
+         "viralPrep": {
+            "rrId": null,
+            "viralPrepType": {
+               "name": "Purified-SOP#VC003",
+               "createdAt": "2021-08-20T23:41:37.183718Z",
+               "createdBy": "person.a@example.com",
+               "updatedAt": null,
+               "updatedBy": null,
+               "id": "f94"
+            },
+            "virus": {
+               "rrId": null,
+               "aliases": [
+                  {
+                     "name": "AiV300001_PHPeB",
+                     "isPreferred": false,
+                     "citation": null,
+                     "createdAt": "2024-05-14T03:00:23.993296Z",
+                     "createdBy": "person.o@example.com",
+                     "updatedAt": "2025-04-28T19:01:06.306726Z",
+                     "updatedBy": "person.w@example.com",
+                     "id": "c28"
+                  },
+                  {
+                     "name": "pAAV-7x-TRE-tDTomato",
+                     "isPreferred": false,
+                     "citation": null,
+                     "createdAt": "2024-12-18T19:46:11.457795Z",
+                     "createdBy": "person.w@example.com",
+                     "updatedAt": "2025-04-28T19:01:06.306726Z",
+                     "updatedBy": "person.w@example.com",
+                     "id": "6d5"
+                  },
+                  {
+                     "name": "VIR300001_PHPeB",
+                     "isPreferred": true,
+                     "citation": null,
+                     "createdAt": "2024-12-18T02:20:30.766508Z",
+                     "createdBy": "person.w@example.com",
+                     "updatedAt": "2025-04-28T19:01:06.306726Z",
+                     "updatedBy": "person.w@example.com",
+                     "id": "835"
+                  }
+               ],
+               "capsid": null,
+               "citations": [],
+               "molecules": [],
+               "otherMolecules": [],
+               "patents": [],
+               "createdAt": "2024-05-14T03:00:23.993285Z",
+               "createdBy": "person.o@example.com",
+               "updatedAt": "2025-04-28T19:01:06.306726Z",
+               "updatedBy": "person.w@example.com",
+               "id": "afe"
+            },
+            "citations": [],
+            "shipments": [],
+            "patents": [],
+            "materialTransferAgreements": [],
+            "qcCertificationFiles": [],
+            "serotypes": [],
+            "createdAt": "2024-05-14T03:00:23.666341Z",
+            "createdBy": "person.o@example.com",
+            "updatedAt": "2024-12-18T20:40:44.234636Z",
+            "updatedBy": "person.w@example.com",
+            "id": "027"
+         },
+         "titers": [
+            {
+               "notes": "",
+               "isPreferred": true,
+               "thawedCount": 1,
+               "result": 15000000000000,
+               "titerType": null,
+               "createdAt": "2023-10-19T22:23:48.925791Z",
+               "createdBy": "person.w@example.com",
+               "updatedAt": "2024-12-18T19:54:43.836499Z",
+               "updatedBy": "person.w@example.com",
+               "id": "619"
+            }
+         ],
+         "createdAt": "2023-10-19T22:22:32.417498Z",
+         "createdBy": "person.w@example.com",
+         "updatedAt": "2024-12-18T19:54:43.836499Z",
+         "updatedBy": "person.w@example.com",
+         "id": "111"
+      }
+   ],
+   "totalCount": 3,
+   "pageSize": 2,
+   "page": 0,
+   "orderBy": "id",
+   "order": "1",
+   "morePages": true,
+   "search": "VT321",
+   "searchFields": "lot"
+}

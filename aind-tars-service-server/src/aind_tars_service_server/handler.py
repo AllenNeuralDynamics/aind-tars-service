@@ -1,40 +1,60 @@
-"""Module to retrieve data from a backend using a session object"""
+"""Module to retrieve data from TARS using session object"""
 
-import logging
+from copy import deepcopy
+from typing import Any, Dict, List, Optional
 
-from requests_toolbelt.sessions import BaseUrlSession
-
-from aind_tars_service_server.models import Content
+from httpx import AsyncClient
 
 
 class SessionHandler:
-    """Handle session object to get data"""
+    """Handle pulling data from Sharepoint lists"""
 
-    def __init__(self, session: BaseUrlSession):
-        """Class constructor"""
-        self.session = session
-
-    def get_info(self, example_arg: str) -> Content:
+    def __init__(self, client: AsyncClient):
         """
-        Get information from a backend. An example argument is added.
+        Class constructor.
+        Parameters
+        ----------
+        client : AsyncClient
+        """
+        self.client = client
+
+    async def get_data(
+        self, url: str, params: Optional[Dict[str, str]], limit: int = 0
+    ) -> List[Dict[str, Any]]:
+        """
+        Returns data from TARS.
 
         Parameters
         ----------
-        example_arg : str
+        url : str
+        params : Dict[str, str] | None
+        limit : int
+          Limit number of items returned. Set to 0 to return all.
 
         Returns
         -------
-        str
-          Contents of a webpage.
+        List[Dict[str, Any]]
 
         """
 
-        logging.debug(f"Sending request for {example_arg}")
-        response = self.session.get("")
+        params_copy = {"page": "0"} if params is None else deepcopy(params)
+        response = await self.client.get(url=url, params=params_copy)
         response.raise_for_status()
-        logging.debug(f"Received response for {example_arg}")
-        text = response.text
-        if example_arg == "length":
-            return Content(info=str(len(text)), arg=example_arg)
-        else:
-            return Content(info=text, arg=example_arg)
+        all_data = []
+        more_pages = response.json()["morePages"]
+        total_count = response.json()["totalCount"]
+        page_num = response.json()["page"]
+        all_data.extend(response.json()["data"])
+        number_of_records = len(all_data)
+        max_count = total_count if limit == 0 else min(total_count, limit)
+        while more_pages and number_of_records < max_count:
+            params_copy["page"] = page_num + 1
+            response = await self.client.get(url=url, params=params_copy)
+            response.raise_for_status()
+            more_pages = response.json()["morePages"]
+            page_num = response.json()["page"]
+            all_data.extend(response.json()["data"])
+            number_of_records = len(all_data)
+        if limit > 0:
+            all_data = all_data[0:limit]
+        return all_data
