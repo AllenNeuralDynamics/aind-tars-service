@@ -36,7 +36,7 @@ configuration = aind_tars_service_client.Configuration(
 with aind_tars_service_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = aind_tars_service_client.DefaultApi(api_client)
-    name = 'name_example' # str | 
+    name = 'AiP20611' # str | 
     page_size = 1 # int | Number of items to return in a single page. (optional) (default to 1)
     limit = 1 # int | Limit number of items returned. Set to 0 to return all. (optional) (default to 1)
 
@@ -110,7 +110,7 @@ configuration = aind_tars_service_client.Configuration(
 with aind_tars_service_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = aind_tars_service_client.DefaultApi(api_client)
-    lot = 'lot_example' # str | 
+    lot = 'VT3214g' # str | 
     page_size = 1 # int | Number of items to return in a single page. (optional) (default to 1)
     limit = 1 # int | Limit number of items returned. Set to 0 to return all. (optional) (default to 1)
 
@@ -161,7 +161,7 @@ No authorization required
 
 Get Viruses
 
-## TARS Endpoint to molecule data.
+## TARS Endpoint to virus data.
 
 ### Example
 
@@ -183,7 +183,7 @@ configuration = aind_tars_service_client.Configuration(
 with aind_tars_service_client.ApiClient(configuration) as api_client:
     # Create an instance of the API class
     api_instance = aind_tars_service_client.DefaultApi(api_client)
-    name = 'name_example' # str | 
+    name = 'VIR300002_PHPeB' # str | 
     page_size = 1 # int | Number of items to return in a single page. (optional) (default to 1)
     limit = 1 # int | Limit number of items returned. Set to 0 to return all. (optional) (default to 1)
 
