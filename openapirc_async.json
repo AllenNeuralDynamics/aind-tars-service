@@ -2,5 +2,5 @@
    "packageName": "aind_tars_service_async_client",
    "projectName": "aind-tars-service-async-client",
    "library": "asyncio",
-   "packageVersion": "0.0.2"
+   "packageVersion": "0.0.3"
 }
