@@ -65,19 +65,40 @@ async def get_access_token(settings: Settings) -> str:
     response_model=List[PrepLotData],
 )
 async def get_viral_prep_lots(
-    lot: str = Path(..., examples=["VT3214g"]),
+    lot: str = Path(
+        ...,
+        openapi_examples={
+            "default": {
+                "summary": "A sample prep lot ID",
+                "description": "Example prep lot ID for TARS",
+                "value": "VT3214g",
+            }
+        },
+    ),
     page_size: int = Query(
         1,
         le=50,
         alias="page_size",
         description="Number of items to return in a single page.",
-        examples=[1],
+        openapi_examples={
+            "default": {
+                "summary": "A sample page size",
+                "description": "Example page size for TARS",
+                "value": 1,
+            }
+        },
     ),
     limit: int = Query(
         1,
         alias="limit",
         description="Limit number of items returned. Set to 0 to return all.",
-        examples=[1],
+        openapi_examples={
+            "default": {
+                "summary": "A sample limit",
+                "description": "Example limit for TARS",
+                "value": 1,
+            }
+        },
     ),
     settings: Settings = Depends(get_settings),
 ):
@@ -113,19 +134,40 @@ async def get_viral_prep_lots(
     response_model=List[MoleculeData],
 )
 async def get_molecules(
-    name: str = Path(..., examples=["AiP20611"]),
+    name: str = Path(
+        ...,
+        openapi_examples={
+            "default": {
+                "summary": "A sample molecule name",
+                "description": "Example molecule name for TARS",
+                "value": "AiP20611",
+            }
+        },
+    ),
     page_size: int = Query(
         1,
         le=50,
         alias="page_size",
         description="Number of items to return in a single page.",
-        examples=[1],
+        openapi_examples={
+            "default": {
+                "summary": "A sample page size",
+                "description": "Example page size for TARS",
+                "value": 1,
+            }
+        },
     ),
     limit: int = Query(
         1,
         alias="limit",
         description="Limit number of items returned. Set to 0 to return all.",
-        examples=[1],
+        openapi_examples={
+            "default": {
+                "summary": "A sample limit",
+                "description": "Example limit for TARS",
+                "value": 1,
+            }
+        },
     ),
     settings: Settings = Depends(get_settings),
 ):
@@ -160,24 +202,45 @@ async def get_molecules(
     response_model=List[VirusData],
 )
 async def get_viruses(
-    name: str = Path(..., examples=["VIR300002_PHPeB"]),
+    name: str = Path(
+        ...,
+        openapi_examples={
+            "default": {
+                "summary": "A sample virus name",
+                "description": "Example virus name for TARS",
+                "value": "VIR300002_PHPeB",
+            }
+        },
+    ),
     page_size: int = Query(
         1,
         le=50,
         alias="page_size",
         description="Number of items to return in a single page.",
-        examples=[1],
+        openapi_examples={
+            "default": {
+                "summary": "A sample page size",
+                "description": "Example page size for TARS",
+                "value": 1,
+            }
+        },
     ),
     limit: int = Query(
         1,
         alias="limit",
         description="Limit number of items returned. Set to 0 to return all.",
-        examples=[1],
+        openapi_examples={
+            "default": {
+                "summary": "A sample limit",
+                "description": "Example limit for TARS",
+                "value": 1,
+            }
+        },
     ),
     settings: Settings = Depends(get_settings),
 ):
     """
-    ## TARS Endpoint to molecule data.
+    ## TARS Endpoint to virus data.
     """
     bearer_token = await get_access_token(settings=settings)
     headers = {
@@ -185,7 +248,9 @@ async def get_viruses(
         "Content-Type": "application/json",
     }
     query_params = {
-        "page_size": str(page_size),
+        "pageSize": str(
+            page_size
+        ),  # Also fixed this - should be "pageSize" not "page_size"
         "order": "1",
         "orderBy": "id",
         "searchFields": "aliases.name",
