@@ -71,9 +71,9 @@ async def get_viral_prep_lots(
             "default": {
                 "summary": "A sample prep lot ID",
                 "description": "Example prep lot ID for TARS",
-                "value": "VT3214g"
+                "value": "VT3214g",
             }
-        }
+        },
     ),
     page_size: int = Query(
         1,
@@ -84,9 +84,9 @@ async def get_viral_prep_lots(
             "default": {
                 "summary": "A sample page size",
                 "description": "Example page size for TARS",
-                "value": 1
+                "value": 1,
             }
-        }
+        },
     ),
     limit: int = Query(
         1,
@@ -96,9 +96,9 @@ async def get_viral_prep_lots(
             "default": {
                 "summary": "A sample limit",
                 "description": "Example limit for TARS",
-                "value": 1
+                "value": 1,
             }
-        }
+        },
     ),
     settings: Settings = Depends(get_settings),
 ):
@@ -134,16 +134,15 @@ async def get_viral_prep_lots(
     response_model=List[MoleculeData],
 )
 async def get_molecules(
-    name: str = Path
-    (
+    name: str = Path(
         ...,
         openapi_examples={
             "default": {
                 "summary": "A sample molecule name",
                 "description": "Example molecule name for TARS",
-                "value": "AiP20611"
+                "value": "AiP20611",
             }
-        }
+        },
     ),
     page_size: int = Query(
         1,
@@ -154,7 +153,7 @@ async def get_molecules(
             "default": {
                 "summary": "A sample page size",
                 "description": "Example page size for TARS",
-                "value": 1
+                "value": 1,
             }
         },
     ),
@@ -166,7 +165,7 @@ async def get_molecules(
             "default": {
                 "summary": "A sample limit",
                 "description": "Example limit for TARS",
-                "value": 1
+                "value": 1,
             }
         },
     ),
@@ -209,9 +208,9 @@ async def get_viruses(
             "default": {
                 "summary": "A sample virus name",
                 "description": "Example virus name for TARS",
-                "value": "VIR300002_PHPeB"
+                "value": "VIR300002_PHPeB",
             }
-        }
+        },
     ),
     page_size: int = Query(
         1,
@@ -222,7 +221,7 @@ async def get_viruses(
             "default": {
                 "summary": "A sample page size",
                 "description": "Example page size for TARS",
-                "value": 1
+                "value": 1,
             }
         },
     ),
@@ -234,7 +233,7 @@ async def get_viruses(
             "default": {
                 "summary": "A sample limit",
                 "description": "Example limit for TARS",
-                "value": 1
+                "value": 1,
             }
         },
     ),
@@ -249,7 +248,9 @@ async def get_viruses(
         "Content-Type": "application/json",
     }
     query_params = {
-        "pageSize": str(page_size),  # Also fixed this - should be "pageSize" not "page_size"
+        "pageSize": str(
+            page_size
+        ),  # Also fixed this - should be "pageSize" not "page_size"
         "order": "1",
         "orderBy": "id",
         "searchFields": "aliases.name",
