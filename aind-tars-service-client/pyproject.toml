@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "aind_tars_service_client"
-version = "0.0.3"
+version = "0.0.4"
 description = "aind-tars-service"
 authors = ["OpenAPI Generator Community <team@openapitools.org>"]
 license = "NoLicense"
