@@ -90,7 +90,7 @@ def client_with_redis() -> Generator[TestClient, Any, None]:
     )
     with (
         patch(
-            "aind_tars_service_server.main.get_settings",
+            "aind_tars_service_server.main.settings",
             return_value=settings_with_redis,
         ),
         patch("aind_tars_service_server.main.from_url", return_value=None),
