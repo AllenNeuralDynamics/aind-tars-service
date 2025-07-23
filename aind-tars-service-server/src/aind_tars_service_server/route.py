@@ -4,11 +4,11 @@ from typing import List
 
 from azure.core.credentials import AccessToken
 from azure.identity import ClientSecretCredential
-from fastapi import APIRouter, Depends, Path, Query, status
+from fastapi import APIRouter, Path, Query, status
 from fastapi_cache.decorator import cache
 from httpx import AsyncClient
 
-from aind_tars_service_server.configs import Settings, get_settings
+from aind_tars_service_server.configs import settings
 from aind_tars_service_server.handler import SessionHandler
 from aind_tars_service_server.models import (
     HealthCheck,
@@ -39,13 +39,10 @@ async def get_health() -> HealthCheck:
 
 
 @cache(expire=3500)
-async def get_access_token(settings: Settings) -> str:
+async def get_access_token() -> str:
     """
     Get access token from either Azure or cache. Token is valid for 60 minutes.
     We set cache ttl to 3500 seconds.
-    Parameters
-    ----------
-    settings : Settings
 
     Returns
     -------
@@ -100,13 +97,12 @@ async def get_viral_prep_lots(
             }
         },
     ),
-    settings: Settings = Depends(get_settings),
 ):
     """
     ## TARS Endpoint to retrieve viral prep lot data.
     Retrieves viral prep lot information from TARS for a prep_lot_id.
     """
-    bearer_token = await get_access_token(settings=settings)
+    bearer_token = await get_access_token()
     headers = {
         "Authorization": f"Bearer {bearer_token}",
         "Content-Type": "application/json",
@@ -169,12 +165,11 @@ async def get_molecules(
             }
         },
     ),
-    settings: Settings = Depends(get_settings),
 ):
     """
     ## TARS Endpoint to molecule data.
     """
-    bearer_token = await get_access_token(settings=settings)
+    bearer_token = await get_access_token()
     headers = {
         "Authorization": f"Bearer {bearer_token}",
         "Content-Type": "application/json",
@@ -237,12 +232,11 @@ async def get_viruses(
             }
         },
     ),
-    settings: Settings = Depends(get_settings),
 ):
     """
     ## TARS Endpoint to virus data.
     """
-    bearer_token = await get_access_token(settings=settings)
+    bearer_token = await get_access_token()
     headers = {
         "Authorization": f"Bearer {bearer_token}",
         "Content-Type": "application/json",

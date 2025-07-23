@@ -3,11 +3,12 @@
 from typing import Optional
 from urllib.parse import urljoin
 
+from aind_settings_utils.aws import SecretsManagerBaseSettings
 from pydantic import Field, HttpUrl, RedisDsn, SecretStr
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic_settings import SettingsConfigDict
 
 
-class Settings(BaseSettings):
+class Settings(SecretsManagerBaseSettings):
     """Settings needed to connect to TARS."""
 
     # noinspection SpellCheckingInspection
@@ -57,6 +58,4 @@ class Settings(BaseSettings):
         )
 
 
-def get_settings() -> Settings:
-    """Utility method to return a settings object."""
-    return Settings()
+settings = Settings()

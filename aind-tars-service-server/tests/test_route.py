@@ -7,7 +7,6 @@ import pytest
 from azure.core.credentials import AccessToken
 from fastapi.testclient import TestClient
 
-from aind_tars_service_server.configs import Settings
 from aind_tars_service_server.route import (
     get_access_token,
 )
@@ -29,7 +28,7 @@ class TestRoutes:
         mock_azure_credentials.return_value.get_token.return_value = (
             AccessToken(token="abc", expires_on=100)
         )
-        token = await get_access_token(settings=Settings())
+        token = await get_access_token()
         mock_azure_credentials.assert_has_calls(
             [
                 call(
