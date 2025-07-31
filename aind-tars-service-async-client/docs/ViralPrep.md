@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **created_by** | **str** |  | [optional] 
 **updated_by** | **str** |  | [optional] 
 **id** | **str** |  | [optional] 
-**rr_id** | [**AnyOf**](AnyOf.md) |  | [optional] 
+**rr_id** | **str** |  | [optional] 
 **viral_prep_type** | [**ViralPrepType**](ViralPrepType.md) |  | [optional] 
 **virus** | [**VirusData**](VirusData.md) |  | [optional] 
 **citations** | **List[object]** |  | [optional] [default to []]

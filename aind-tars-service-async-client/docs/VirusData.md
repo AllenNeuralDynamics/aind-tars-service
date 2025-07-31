@@ -11,7 +11,7 @@ Name | Type | Description | Notes
 **created_by** | **str** |  | [optional] 
 **updated_by** | **str** |  | [optional] 
 **id** | **str** |  | [optional] 
-**rr_id** | [**AnyOf**](AnyOf.md) |  | [optional] 
+**rr_id** | **str** |  | [optional] 
 **aliases** | [**List[Alias]**](Alias.md) |  | [optional] [default to []]
 **capsid** | **Dict[str, object]** |  | [optional] 
 **citations** | **List[object]** |  | [optional] [default to []]

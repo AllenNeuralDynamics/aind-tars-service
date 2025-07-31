@@ -15,7 +15,7 @@ Name | Type | Description | Notes
 **state** | [**AnyOf**](AnyOf.md) |  | [optional] 
 **aliases** | [**List[Alias]**](Alias.md) |  | [optional] [default to []]
 **citations** | **List[object]** |  | [optional] [default to []]
-**rr_id** | [**AnyOf**](AnyOf.md) |  | [optional] 
+**rr_id** | **str** |  | [optional] 
 **full_name** | **str** |  | [optional] 
 **addgene_id** | [**AnyOf**](AnyOf.md) |  | [optional] 
 **mgi_id** | [**AnyOf**](AnyOf.md) |  | [optional] 
