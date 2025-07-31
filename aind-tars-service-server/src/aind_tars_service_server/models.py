@@ -1,7 +1,7 @@
 """Module for defining models from TARS"""
 
 from datetime import datetime
-from typing import Any, List, Literal, Optional
+from typing import Any, Dict, List, Literal, Optional
 
 from pydantic import BaseModel, Field
 
@@ -38,7 +38,7 @@ class VirusData(DataModel):
 
     rrId: Optional[Any] = Field(default=None)
     aliases: List[Alias] = Field(default=[])
-    capsid: Optional[Any] = Field(default=None)
+    capsid: Optional[Dict[str, Any]] = Field(default=None)
     citations: list = Field(default=[])
     molecules: list = Field(default=[])  # List[Molecule]?
     otherMolecules: list = Field(default=[])
