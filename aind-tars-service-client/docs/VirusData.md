@@ -13,7 +13,7 @@ Name | Type | Description | Notes
 **id** | **str** |  | [optional] 
 **rr_id** | [**AnyOf**](AnyOf.md) |  | [optional] 
 **aliases** | [**List[Alias]**](Alias.md) |  | [optional] [default to []]
-**capsid** | [**AnyOf**](AnyOf.md) |  | [optional] 
+**capsid** | **Dict[str, object]** |  | [optional] 
 **citations** | **List[object]** |  | [optional] [default to []]
 **molecules** | **List[object]** |  | [optional] [default to []]
 **other_molecules** | **List[object]** |  | [optional] [default to []]
