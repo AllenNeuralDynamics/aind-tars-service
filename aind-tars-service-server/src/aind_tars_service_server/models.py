@@ -36,7 +36,7 @@ class Alias(DataModel):
 class VirusData(DataModel):
     """Virus"""
 
-    rrId: Optional[Any] = Field(default=None)
+    rrId: Optional[str] = Field(default=None)
     aliases: List[Alias] = Field(default=[])
     capsid: Optional[Dict[str, Any]] = Field(default=None)
     citations: list = Field(default=[])
@@ -54,7 +54,7 @@ class ViralPrepType(DataModel):
 class ViralPrep(DataModel):
     """ViralPrep"""
 
-    rrId: Optional[Any] = Field(default=None)
+    rrId: Optional[str] = Field(default=None)
     viralPrepType: Optional[ViralPrepType] = Field(default=None)
     virus: Optional[VirusData] = Field(default=None)
     citations: list = Field(default=[])
@@ -116,7 +116,7 @@ class MoleculeData(DataModel):
     state: Optional[Any] = Field(default=None)
     aliases: List[Alias] = Field(default=[])
     citations: list = Field(default=[])
-    rrId: Optional[Any] = Field(default=None)
+    rrId: Optional[str] = Field(default=None)
     fullName: Optional[str] = Field(default=None)
     addgeneId: Optional[Any] = Field(default=None)
     mgiId: Optional[Any] = Field(default=None)
