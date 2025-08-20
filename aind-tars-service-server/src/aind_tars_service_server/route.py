@@ -4,7 +4,7 @@ from typing import List
 
 from azure.core.credentials import AccessToken
 from azure.identity import ClientSecretCredential
-from fastapi import APIRouter, Path, Query, status
+from fastapi import APIRouter, Query, status
 from fastapi_cache.decorator import cache
 from httpx import AsyncClient
 
@@ -58,12 +58,11 @@ async def get_access_token() -> str:
 
 
 @router.get(
-    "/viral_prep_lots/{lot}",
+    "/viral_prep_lots",
     response_model=List[PrepLotData],
 )
 async def get_viral_prep_lots(
-    lot: str = Path(
-        ...,
+    lot: str = Query(
         openapi_examples={
             "default": {
                 "summary": "A sample prep lot ID",
@@ -126,12 +125,11 @@ async def get_viral_prep_lots(
 
 
 @router.get(
-    "/molecules/{name}",
+    "/molecules",
     response_model=List[MoleculeData],
 )
 async def get_molecules(
-    name: str = Path(
-        ...,
+    name: str = Query(
         openapi_examples={
             "default": {
                 "summary": "A sample molecule name",
@@ -193,12 +191,11 @@ async def get_molecules(
 
 
 @router.get(
-    "/viruses/{name}",
+    "/viruses",
     response_model=List[VirusData],
 )
 async def get_viruses(
-    name: str = Path(
-        ...,
+    name: str = Query(
         openapi_examples={
             "default": {
                 "summary": "A sample virus name",
@@ -242,9 +239,7 @@ async def get_viruses(
         "Content-Type": "application/json",
     }
     query_params = {
-        "pageSize": str(
-            page_size
-        ),  # Also fixed this - should be "pageSize" not "page_size"
+        "pageSize": str(page_size),
         "order": "1",
         "orderBy": "id",
         "searchFields": "aliases.name",
