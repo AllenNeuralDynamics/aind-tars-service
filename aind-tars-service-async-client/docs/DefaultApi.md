@@ -4,9 +4,9 @@ All URIs are relative to *http://localhost*
 
 Method | HTTP request | Description
 ------------- | ------------- | -------------
-[**get_molecules**](DefaultApi.md#get_molecules) | **GET** /molecules/{name} | Get Molecules
-[**get_viral_prep_lots**](DefaultApi.md#get_viral_prep_lots) | **GET** /viral_prep_lots/{lot} | Get Viral Prep Lots
-[**get_viruses**](DefaultApi.md#get_viruses) | **GET** /viruses/{name} | Get Viruses
+[**get_molecules**](DefaultApi.md#get_molecules) | **GET** /molecules | Get Molecules
+[**get_viral_prep_lots**](DefaultApi.md#get_viral_prep_lots) | **GET** /viral_prep_lots | Get Viral Prep Lots
+[**get_viruses**](DefaultApi.md#get_viruses) | **GET** /viruses | Get Viruses
 
 
 # **get_molecules**
