@@ -53,8 +53,9 @@ class TestRoutes:
         """Tests get_viral_prep_lot route with successful response"""
         mock_get_access_token.return_value = "abc123"
         mock_get_data.return_value = mock_prep_lot_data
+        query = {"lot": "VT3214g"}
 
-        response = client.get("/viral_prep_lots/VT3214g")
+        response = client.get("/viral_prep_lots", params=query)
 
         assert 200 == response.status_code
         assert len(response.json()) == 1
@@ -72,8 +73,9 @@ class TestRoutes:
         """Tests get_viral_prep_lot route with successful response"""
         mock_get_access_token.return_value = "abc123"
         mock_get_data.return_value = mock_virus_data
+        query = {"name": "VIR300002_PHPeB"}
 
-        response = client.get("/viruses/VIR300002_PHPeB")
+        response = client.get("/viruses", params=query)
 
         assert 200 == response.status_code
         assert len(response.json()) == 1
@@ -92,7 +94,9 @@ class TestRoutes:
         mock_get_access_token.return_value = "abc123"
         mock_get_data.return_value = mock_molecule_data
 
-        response = client.get("/molecules/AiP1109")
+        query = {"name": "AiP1109"}
+
+        response = client.get("/molecules", params=query)
 
         assert 200 == response.status_code
         assert len(response.json()) == 1
